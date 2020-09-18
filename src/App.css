@@ -2,18 +2,42 @@
   text-align: center;
 }
 
+.playground__border{
+  width: 600px;
+  height: 600px;
+
+  margin: 20px;
+  padding: 20px;
+
+  background-color: #e8e8e8;
+  border: solid 5px #cfcfcf;
+}
+
 .playground__field{
   display: grid;
   grid-template-columns: repeat(20, 30px);
   grid-template-rows: repeat(20, 30px);
 
-  width: 600px;
-  height: 600px;
-
   background-color: #45a345;
+
+  outline: solid 5px #b8b8b8;
+  box-shadow: 0 0 20px 15px#5c5c5c;
 }
 
 .playground__chunk{
   width: 30px;
   height: 30px;
+}
+
+.rabbit{
+  width: 10px;
+  height: 10px;
+  position: relative;
+  top: 10px;
+  left: 10px;
+  background-color: blanchedalmond;
+}
+
+.rabbit:focus{
+  background-color: red;
 }
