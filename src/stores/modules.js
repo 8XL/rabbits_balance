@@ -32,3 +32,10 @@ export const randomIndex = (arr) => {
     const i = Math.floor(Math.random() * ((arr.length+1) - 1) + 1) - 1;
     return i
 }
+
+export const percents = (min, max) => {
+    const startRange = Math.floor(((20 * 20) * min) / 100);
+    const endRange = Math.floor(((20 * 20) * max) / 100);
+    const value = Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
+    return value
+}

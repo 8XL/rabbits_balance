@@ -1,10 +1,11 @@
 import { observable, action } from 'mobx';
 
-import { shuffle } from './modules';
+import { shuffle, percents } from './modules';
 
 export default class forestStore{
     constructor(){
         this.shuffle = shuffle;
+        this.percents = percents;
     }
 
     @observable
@@ -33,12 +34,7 @@ export default class forestStore{
         } 
     }
     
-    percents = (min, max) => {
-        const startRange = Math.floor(((20 * 20) * min) / 100);
-        const endRange = Math.floor(((20 * 20) * max) / 100);
-        const value = Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
-        return value
-    }
+    
 }
 
 const dataForest = [
