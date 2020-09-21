@@ -32,10 +32,8 @@
 .rabbit{
   width: 10px;
   height: 10px;
-  position: relative;
-  top: 10px;
-  left: 10px;
   background-color: blanchedalmond;
+  float: left;
 }
 
 .rabbit:focus{

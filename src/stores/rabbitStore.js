@@ -18,7 +18,7 @@ export default class rabbitStore {
 
     @observable
         delayForRabbits = {
-            water: 2,
+            water: 3,
             swamp: 3,
             mud: 2,
             forest: 2,
@@ -35,16 +35,22 @@ export default class rabbitStore {
     @action
         fillPopulation = () => {
             for(let i = 0; i<this.rabbitsCount; i++){
-                const randomStartPosition = Math.floor(Math.random() * (390 - 340 + 1) + 340);
-                const rabbit = {
-                    name: 'rabbit',
-                    position: randomStartPosition,
-                    tile: '',
-                    delayCounter: 0,
-                    hole: false,
-                }
-                this.rabbits = [...this.rabbits, rabbit];
+                this.addPopulation()
             }
+        }
+    
+    @action
+        addPopulation = (pos) => {   
+            const randomStartPosition = Math.floor(Math.random() * (390 - 145 + 1) + 145);
+            const position = pos ? pos : randomStartPosition;
+            const rabbit = {
+                name: 'rabbit',
+                position: position,
+                tile: '',
+                delayCounter: 0,
+                hole: false,
+            }
+            this.rabbits = [...this.rabbits, rabbit];
         }
 
     @action

@@ -88,8 +88,8 @@ const dataForest = [
             rabbit: false,
             wolf: false
         },
-        min: 5,
-        max: 8
+        min: 3,
+        max: 4
     },
     {
         obj: {

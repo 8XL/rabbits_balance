@@ -5,7 +5,7 @@ import { classes } from '../../styles/useStyle';
 
 export const Chunk = inject('rabbitStore')(observer(({ rabbitStore, chunk, i, rabbit }) => {
     return(
-        <div className='playground__chunk' style={classes.playground.chunk[chunk.name]} onClick={rabbitStore.rabbitMovement}> 
+        <div className='playground__chunk' style={classes.playground.chunk[chunk.name]}> 
             { 
                 rabbitStore.getRabbits.map((el, index)=>{
                     if(el.position === i){

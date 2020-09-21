@@ -1,6 +1,6 @@
 import { observable, action, computed, autorun } from 'mobx';
 
-import { restrictions, shuffle, randomIndex } from './modules';
+import { restrictions, shuffle, randomIndex, factor } from './modules';
 import forestStore from './forestStore';
 import rabbitStore from './rabbitStore';
 
@@ -13,6 +13,7 @@ class mainStore{
         this.restrictions = restrictions;
         this.shuffle = shuffle;
         this.randomIndex = randomIndex;
+        this.factor = factor;
         
         autorun(()=>{
             this.forestStore.fillForest();
@@ -23,6 +24,17 @@ class mainStore{
 
     @observable
         movementCounter = 0;
+
+    @action
+        movementInterval = () => {
+            setInterval(()=>this.intervalActions(), 1000);
+        }
+
+    @action 
+        intervalActions = async () =>{
+            await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); // обертка для интервала
+            this.controlPopulation(this.rabbitStore.rabbits, this.rabbitStore.addPopulation);
+        }
 
     @action
         animalMovement = async(animals, action) => {
@@ -59,15 +71,24 @@ class mainStore{
                 return this.restrictions(animal.position)
             }
         }
-    
-    @action
-        movementInterval = () => {
-            setInterval(()=>this.intervalActions(), 1000);
-        }
 
     @action 
-        intervalActions = async () =>{
-            await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits);
+        controlPopulation = (animals, addAnimal) => {
+            const positions = [];
+            const recurPositions = [];
+
+            animals.map(animal=>(animal.tile!=='water' && animal.tile!=='swamp')&&positions.push(animal.position));
+            
+            for(let i = 0; i < positions.length; i++){
+                if(positions.indexOf(positions[i]) !== positions.lastIndexOf(positions[i])){
+                    recurPositions.push(positions[i]);
+                }
+            }
+            const getCoitusPos = Array.from(new Set(recurPositions));
+            getCoitusPos.map(pos=>{
+                const percent = this.factor();
+                percent<=10 && addAnimal(pos);
+            });
         }
 };
 
