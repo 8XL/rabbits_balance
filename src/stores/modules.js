@@ -21,9 +21,12 @@ export const restrictions = (el) => {
 };
 
 export const shuffle = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1)); 
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+    if(arr.length>2){
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); 
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr
     }
     return arr
 }
@@ -39,3 +42,26 @@ export const percents = (min, max) => {
     const value = Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
     return value
 }
+
+const delayForRabbits = {
+    water: 3,
+    swamp: 4,
+    mud: 2,
+    forest: 2,
+}
+
+const delayForFox = {}
+
+// if(animal.position === value){
+//     console.log('delayed')
+//     if(0 <= animal.delayCounter){
+//         animal.delayed = true;
+//         animal.delayCounter += 1;
+//         return [0]
+//     } else {
+//         return restrictions(animal.position)
+//     }
+// } else {
+//     console.log('restrictions', animal.position)
+//     return restrictions(animal.position)
+// }

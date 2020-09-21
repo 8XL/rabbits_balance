@@ -1,9 +1,10 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 import { shuffle, percents } from './modules';
 
 export default class forestStore{
     constructor(){
+        this.data = dataForest;
         this.shuffle = shuffle;
         this.percents = percents;
     }
@@ -11,29 +12,45 @@ export default class forestStore{
     @observable
         forest = [];
 
-    @action    
-        fillForest = async() =>{
-            for(let el of dataForest){
-                this.addTiles(el.obj, el.min, el.max)
-            }
-            await this.shuffle(this.forest)
+    @observable
+        holes = [];
+
+    @computed get
+        getHoles(){
+            return this.holes
         }
 
-    addTiles = (obj, min, max) => {
-        const length = this.percents(min, max);
-        if(this.forest.length < 1){
-            this.forest.length = length;
-            this.forest.fill(obj);
-        } else if(obj.name === 'grass'){
-            const end = this.forest.length;
-            this.forest.length = 400;
-            this.forest.fill(obj, end);
-        } else {
-            this.forest.length += length;
-            this.forest.fill(obj, this.forest.length - length);
-        } 
-    }
-    
+    @action    
+        fillForest = async() =>{
+            for(let el of this.data){
+                this.addTiles(el.obj, el.min, el.max);
+            }
+            await this.shuffle(this.forest);
+            this.setDataTiles(this.forest);
+        }
+
+    @action 
+        setDataTiles = (arr) => {
+            arr.forEach((el, i)=>{
+                el.name==='hole'&&this.holes.push(i);
+            })
+        }
+
+    @action 
+        addTiles = (obj, min, max) => {
+            const length = this.percents(min, max);
+            if(this.forest.length < 1){
+                this.forest.length = length;
+                this.forest.fill(obj);
+            } else if(obj.name === 'grass'){
+                const end = this.forest.length;
+                this.forest.length = 400;
+                this.forest.fill(obj, end);
+            } else {
+                this.forest.length += length;
+                this.forest.fill(obj, this.forest.length - length);
+            } 
+        }  
     
 }
 
@@ -53,8 +70,8 @@ const dataForest = [
             rabbit: false,
             wolf: false
         },
-        min: 10,
-        max: 13
+        min: 7,
+        max: 10
     },
     {
         obj: {
@@ -62,8 +79,8 @@ const dataForest = [
             rabbit: false,
             wolf: false
         },
-        min: 4,
-        max: 5
+        min: 3,
+        max: 4
     },
     {
         obj: {
@@ -71,8 +88,8 @@ const dataForest = [
             rabbit: false,
             wolf: false
         },
-        min: 8,
-        max: 10
+        min: 5,
+        max: 8
     },
     {
         obj: {
@@ -80,8 +97,8 @@ const dataForest = [
             rabbit: false,
             wolf: false
         },
-        min: 15,
-        max: 20
+        min: 10,
+        max: 15
     },
     {
         obj: {

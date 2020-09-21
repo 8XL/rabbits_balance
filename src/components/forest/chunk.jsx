@@ -7,8 +7,11 @@ export const Chunk = inject('rabbitStore')(observer(({ rabbitStore, chunk, i, ra
     return(
         <div className='playground__chunk' style={classes.playground.chunk[chunk.name]} onClick={rabbitStore.rabbitMovement}> 
             { 
-                rabbitStore.getRabbits.map(el=>{
-                    if(el === i){return  rabbit} 
+                rabbitStore.getRabbits.map((el, index)=>{
+                    if(el.position === i){
+                        rabbitStore.setTile(index, chunk.name)
+                        return  rabbit
+                    } 
                 }) 
             }
             </div>
