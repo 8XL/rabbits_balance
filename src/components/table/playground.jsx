@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 
 import { Chunk, Rabbit } from '../forest';
 
-export const Playground = inject('forestStore')(observer(({ forestStore }) => {
+export const Playground = inject('forestStore', 'rabbitStore')(observer(({ forestStore, rabbitStore }) => {
     return(
         <div className='playground'>
             <div className='playground__border'>
@@ -13,10 +13,15 @@ export const Playground = inject('forestStore')(observer(({ forestStore }) => {
                             <Chunk 
                                 key={i} 
                                 chunk={chunk} 
-                                i={i} 
-                                rabbit = { <Rabbit /> }
-
-                            />
+                                i={i}
+                            > 
+                                { rabbitStore.getRabbits.map((rabbit, index)=>{
+                                    if(rabbit.position === i){
+                                        rabbitStore.setTile(index, chunk.name)
+                                        return  <Rabbit key={rabbit.id}/>
+                                    }
+                                })}
+                            </Chunk>
                         ))
                     }
                 </div>

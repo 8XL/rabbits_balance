@@ -1,11 +1,12 @@
 import { observable, action, computed, autorun } from 'mobx';
 
-import { shuffle } from './modules';
+import { shuffle, timestamp } from './modules';
 import mainStore from './mainStore';
 
 export default class rabbitStore {
     constructor(){
         this.shuffle = shuffle;
+        this.timestamp = timestamp;
     }
 
     @observable
@@ -37,6 +38,7 @@ export default class rabbitStore {
             for(let i = 0; i<this.rabbitsCount; i++){
                 this.addPopulation()
             }
+            console.log(this.rabbits)
         }
     
     @action
@@ -49,6 +51,7 @@ export default class rabbitStore {
                 tile: '',
                 delayCounter: 0,
                 hole: false,
+                id: this.timestamp()
             }
             this.rabbits = [...this.rabbits, rabbit];
         }

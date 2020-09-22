@@ -77,7 +77,7 @@ class mainStore{
             const positions = [];
             const recurPositions = [];
 
-            animals.map(animal=>(animal.tile!=='water' && animal.tile!=='swamp')&&positions.push(animal.position));
+            animals.forEach(animal=>(animal.tile!=='water' && animal.tile!=='swamp')&&positions.push(animal.position));
             
             for(let i = 0; i < positions.length; i++){
                 if(positions.indexOf(positions[i]) !== positions.lastIndexOf(positions[i])){

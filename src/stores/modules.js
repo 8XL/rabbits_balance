@@ -45,6 +45,10 @@ export const factor = () => {
     return Math.floor(Math.random()*(101-1)+1);
 }
 
+export const timestamp = ()=>{
+    return Math.floor(new Date().getTime()*(Math.random()*(1000-1)+1)).toString();
+}
+
 const delayForRabbits = {
     water: 3,
     swamp: 4,
