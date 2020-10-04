@@ -27,13 +27,14 @@ class mainStore{
 
     @action
         movementInterval = () => {
-            setInterval(()=>this.intervalActions(), 1000);
+            setInterval(()=>this.intervalActions(), 10000);
         }
 
     @action 
-        intervalActions = async () =>{
-            await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); // обертка для интервала
+        intervalActions = async () =>{ // обертка для интервала
+            await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); 
             this.controlPopulation(this.rabbitStore.rabbits, this.rabbitStore.addPopulation);
+            this.movementCounter +=1;
         }
 
     @action

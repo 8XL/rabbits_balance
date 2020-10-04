@@ -12,6 +12,11 @@ export default class forestStore{
     @observable
         forest = [];
 
+    @computed get
+        getForest(){
+            return this.forest
+        }
+
     @observable
         holes = [];
 
