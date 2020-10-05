@@ -1,14 +1,16 @@
-import { observable, action, computed, autorun } from 'mobx';
+import { observable, action, computed, autorun, reaction } from 'mobx';
 
 import { restrictions, shuffle, randomIndex, factor } from './modules';
 import forestStore from './forestStore';
 import rabbitStore from './rabbitStore';
+import tableStore from './tableStore';
 
 class mainStore{
 
     constructor(){
         this.forestStore = new forestStore();
         this.rabbitStore = new rabbitStore();
+        this.tableStore = new tableStore();
 
         this.restrictions = restrictions;
         this.shuffle = shuffle;
@@ -20,21 +22,61 @@ class mainStore{
             this.rabbitStore.fillPopulation();
             this.movementInterval();
         })
+
+        reaction(
+            ()=> this.getMovementCounter,
+            score=>{
+               this.tableStore.setTable({score: score})
+            }
+        )
+        
+        reaction(
+            ()=> this.rabbitStore.getRabbitsCount,
+            rabbits=>{
+                this.tableStore.setTable({rabbits: rabbits})
+            }
+        )
+
+        reaction(
+            ()=> this.getIntervalSpeed,
+            sec=>{
+                this.tableStore.setTable({speed: sec})
+            }
+        )
     }
 
     @observable
         movementCounter = 0;
+    
+    @computed get
+        getMovementCounter(){
+            return this.movementCounter
+        }
+    
+    @observable
+        intervalSpeed = 10
 
-    @action
-        movementInterval = () => {
-            setInterval(()=>this.intervalActions(), 1000);
+    @computed get
+        getIntervalSpeed(){
+            return this.intervalSpeed
         }
 
+    @action
+        changeInterval = (sec) => {
+            this.intervalSpeed += sec;
+        }
+//============================ Экшены внутри интервала
     @action 
         intervalActions = async () =>{ // обертка для интервала
             await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); 
             this.controlPopulation(this.rabbitStore.rabbits, this.rabbitStore.addPopulation);
+
             this.movementCounter +=1;
+        }
+//============================ Блок движения животных
+    @action
+        movementInterval = () => {
+            setInterval(()=>this.intervalActions(), this.intervalSpeed * 1000);
         }
 
     @action
@@ -42,7 +84,7 @@ class mainStore{
             const newPos = animals.map(animal=>{
                 const step = this.setDelay(animal);
                 this.shuffle(step);
-                const movement = this.animalMemory(animal, step);
+                const movement = step.length > 1 ? this.animalMemory(animal, step) : 0;
                 animal.position = animal.hole ? movement : animal.position += movement;
                 return animal
             });
@@ -54,18 +96,19 @@ class mainStore{
             const cloneStep = step;
             let movement = this.randomIndex(cloneStep);
             if(animal.memory.length>0){
-            for(let i=0; i<animal.memory.length; i++){
-            //интеллект кролика в среднем равен 0.4 EQ, значит мы предполагаем
-            //что кролик может пользоваться своим ителлектом с вероятностью в 
-            //40% ))))))
-                if(this.factor()<=40 && animal.position + cloneStep[movement] === animal.memory[i]){
-                    cloneStep.splice(movement, 1);
-                    movement = this.randomIndex(cloneStep);
-                    console.log(animal.memory, cloneStep, step, 'КРОЛИК ДУМАЕТ!111')
+                for(let i=0; i<animal.memory.length; i++){
+                //интеллект кролика в среднем равен 0.4 EQ, значит мы предполагаем
+                //что кролик может пользоваться своим ителлектом с вероятностью в 
+                //20% ))))))
+                    if(this.factor()<=20 && animal.position + cloneStep[movement] === animal.memory[i]){
+                        cloneStep.splice(movement, 1);
+                        movement = this.randomIndex(cloneStep);
+                        return cloneStep[movement]
+                    }
                     return cloneStep[movement]
                 }
-                return cloneStep[movement]
-            }}
+            }
+            return cloneStep[movement]
         }
     
     @action 
@@ -98,7 +141,7 @@ class mainStore{
                 return this.restrictions(animal.position)
             }
         }
-
+//============================ Контроль популяции
     @action 
         controlPopulation = (animals, addAnimal) => {
             const positions = [];

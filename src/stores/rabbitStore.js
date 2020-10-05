@@ -17,6 +17,11 @@ export default class rabbitStore {
             return this.rabbits
         }
 
+    @computed get 
+        getRabbitsCount(){
+            return this.rabbits.length
+        }
+
     @observable
         delayForRabbits = {
             water: 3,
@@ -38,7 +43,6 @@ export default class rabbitStore {
             for(let i = 0; i<this.rabbitsCount; i++){
                 this.addPopulation()
             }
-            console.log(this.rabbits)
         }
     
     @action
@@ -52,7 +56,7 @@ export default class rabbitStore {
                 delayCounter: 0,
                 hole: false,
                 id: this.timestamp(),
-                memory: [10, 50]
+                memory: []
             }
             this.rabbits = [...this.rabbits, rabbit];
         }
