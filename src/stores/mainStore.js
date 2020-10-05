@@ -27,7 +27,7 @@ class mainStore{
 
     @action
         movementInterval = () => {
-            setInterval(()=>this.intervalActions(), 10000);
+            setInterval(()=>this.intervalActions(), 1000);
         }
 
     @action 
@@ -42,25 +42,51 @@ class mainStore{
             const newPos = animals.map(animal=>{
                 const step = this.setDelay(animal);
                 this.shuffle(step);
-                const movement = this.randomIndex(step)
-                animal.position = animal.hole ? step[movement] : animal.position+= step[movement];
+                const movement = this.animalMemory(animal, step);
+                animal.position = animal.hole ? movement : animal.position += movement;
                 return animal
             });
             await action(newPos);
         }
+
+    @action
+        animalMemory = (animal, step) => {
+            const cloneStep = step;
+            let movement = this.randomIndex(cloneStep);
+            if(animal.memory.length>0){
+            for(let i=0; i<animal.memory.length; i++){
+            //интеллект кролика в среднем равен 0.4 EQ, значит мы предполагаем
+            //что кролик может пользоваться своим ителлектом с вероятностью в 
+            //40% ))))))
+                if(this.factor()<=40 && animal.position + cloneStep[movement] === animal.memory[i]){
+                    cloneStep.splice(movement, 1);
+                    movement = this.randomIndex(cloneStep);
+                    console.log(animal.memory, cloneStep, step, 'КРОЛИК ДУМАЕТ!111')
+                    return cloneStep[movement]
+                }
+                return cloneStep[movement]
+            }}
+        }
     
     @action 
         setDelay = (animal) => {
-            const delayData = this.rabbitStore.getDelayRabbits
+            const delayData = this.rabbitStore.getDelayRabbits;
+
             if(delayData[animal.tile]){
                 if(animal.delayCounter>=0 && animal.delayCounter < delayData[animal.tile]){
                     animal.delayCounter +=1;
                     return [0]
-                } else if(animal.delayCounter >=delayData[animal.tile]){
+                } else if(animal.delayCounter >= delayData[animal.tile]){
                     animal.delayCounter = 0;
+                    //с вероятностью в 15 процентов животное может запомнить замедляющий тайл 
+                    //при выходе из него и ограничеваем память кролика в 20 элементов
+                    if(this.factor() <= 15){
+                        animal.memory.length > 20 && animal.memory.splice(0, animal.memory.length - 20);
+                        animal.memory.push(animal.position);
+                    }
                     return this.restrictions(animal.position)
                 }
-            } else if(animal.tile === 'hole'){
+            } else if(animal.name==='rabbit' && animal.tile === 'hole'){
                 animal.hole = !animal.hole;
                 if(animal.hole){
                     const arr = [...this.forestStore.getHoles];

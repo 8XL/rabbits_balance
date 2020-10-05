@@ -8,13 +8,13 @@ export const restrictions = (el) => {
     } else if (el === 19){
         return [-1, -1, 20, 20]
     } else if (el < 20){
-        return [1, -1, 20, -1]
+        return [1, -1, 20]
     } else if (el > 379){
-        return [-1, -20, 1, -20]
+        return [-1, -20, 1]
     } else if((el + 1) % 20 === 0){
-        return [20, -1, -20, -1]
+        return [20, -1, -20]
     } else if (el % 20 === 0){
-        return [1, 1, 20, -20]
+        return [1, 20, -20]
     } else {
         return [1, 20, -1, -20]
     }

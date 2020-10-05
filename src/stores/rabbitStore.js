@@ -51,7 +51,8 @@ export default class rabbitStore {
                 tile: '',
                 delayCounter: 0,
                 hole: false,
-                id: this.timestamp()
+                id: this.timestamp(),
+                memory: [10, 50]
             }
             this.rabbits = [...this.rabbits, rabbit];
         }
@@ -70,4 +71,5 @@ export default class rabbitStore {
         setTile = (i, tile) => {
             this.rabbits[i].tile = tile;
         }
+
 }
