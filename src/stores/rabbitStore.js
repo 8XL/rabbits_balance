@@ -30,11 +30,6 @@ export default class rabbitStore {
             forest: 2,
         }
 
-    @computed get
-        getDelayRabbits(){
-            return this.delayForRabbits
-        }
-
     @observable
         rabbitsCount = 10;
 
@@ -57,7 +52,7 @@ export default class rabbitStore {
                 hole: false,
                 id: this.timestamp(),
                 memory: []
-            }
+            };
             this.rabbits = [...this.rabbits, rabbit];
         }
 

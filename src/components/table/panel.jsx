@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Info } from './index'
+import { Info, Button } from './index'
 
 export const Panel = () =>{
     return(
@@ -10,6 +10,10 @@ export const Panel = () =>{
                 <Info name={'rabbits'} />
                 <Info name={'speed'} />
                 <Info name={'foxes'} />
+            </div>
+            <div className='panel__speed'>
+                <Button btn={{name: '+'}} />
+                <Button btn={{name: '-'}} />
             </div>
         </div>
     )

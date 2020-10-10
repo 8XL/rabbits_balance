@@ -20,27 +20,27 @@ class mainStore{
         autorun(()=>{
             this.forestStore.fillForest();
             this.rabbitStore.fillPopulation();
-            this.movementInterval();
+            this.interval()
         })
 
         reaction(
             ()=> this.getMovementCounter,
             score=>{
-               this.tableStore.setTable({score: score})
+               this.tableStore.setPanel({score: score})
             }
         )
-        
+
         reaction(
             ()=> this.rabbitStore.getRabbitsCount,
             rabbits=>{
-                this.tableStore.setTable({rabbits: rabbits})
+                this.tableStore.setPanel({rabbits: rabbits})
             }
         )
 
         reaction(
             ()=> this.getIntervalSpeed,
             sec=>{
-                this.tableStore.setTable({speed: sec})
+                this.tableStore.setPanel({speed: sec})
             }
         )
     }
@@ -52,43 +52,48 @@ class mainStore{
         getMovementCounter(){
             return this.movementCounter
         }
-    
+//============================ Время интервала(скорость шага)    
     @observable
-        intervalSpeed = 10
+        intervalSpeed = 5;
 
     @computed get
         getIntervalSpeed(){
             return this.intervalSpeed
         }
+//РАЗБЕРИСЬ С ИНТЕРВАЛОМ
 
     @action
-        changeInterval = (sec) => {
-            this.intervalSpeed += sec;
+        changeInterval = (sec) =>{
+            this.intervalSpeed = sec;
         }
 //============================ Экшены внутри интервала
     @action 
-        intervalActions = async () =>{ // обертка для интервала
-            await this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); 
+        intervalActions = () =>{ // обертка для интервала
+            this.animalMovement(this.rabbitStore.rabbits, this.rabbitStore.setRabbits); 
             this.controlPopulation(this.rabbitStore.rabbits, this.rabbitStore.addPopulation);
 
             this.movementCounter +=1;
         }
+
+    @action 
+        interval = () =>{
+            setTimeout(() => {
+                this.intervalActions();
+                setTimeout(this.interval, this.intervalSpeed * 800)
+            }, this.intervalSpeed * 800);
+       }
 //============================ Блок движения животных
-    @action
-        movementInterval = () => {
-            setInterval(()=>this.intervalActions(), this.intervalSpeed * 1000);
-        }
 
     @action
-        animalMovement = async(animals, action) => {
-            const newPos = animals.map(animal=>{
-                const step = this.setDelay(animal);
-                this.shuffle(step);
+        animalMovement = (animals, action) => {
+            const newPos =  animals.map(animal=>{
+                const step = this.shuffle(this.setDelay(animal));
+                
                 const movement = step.length > 1 ? this.animalMemory(animal, step) : 0;
                 animal.position = animal.hole ? movement : animal.position += movement;
                 return animal
             });
-            await action(newPos);
+            action(newPos);
         }
 
     @action
@@ -112,9 +117,8 @@ class mainStore{
         }
     
     @action 
-        setDelay = (animal) => {
-            const delayData = this.rabbitStore.getDelayRabbits;
-
+        setDelay = (animal) => {  
+            const delayData = this.rabbitStore.delayForRabbits;
             if(delayData[animal.tile]){
                 if(animal.delayCounter>=0 && animal.delayCounter < delayData[animal.tile]){
                     animal.delayCounter +=1;
@@ -122,9 +126,9 @@ class mainStore{
                 } else if(animal.delayCounter >= delayData[animal.tile]){
                     animal.delayCounter = 0;
                     //с вероятностью в 15 процентов животное может запомнить замедляющий тайл 
-                    //при выходе из него и ограничеваем память кролика в 20 элементов
+                    //при выходе из него и ограничеваем память кролика в 10 элементов
                     if(this.factor() <= 15){
-                        animal.memory.length > 20 && animal.memory.splice(0, animal.memory.length - 20);
+                        animal.memory.length > 10 && animal.memory.splice(0, animal.memory.length - 20);
                         animal.memory.push(animal.position);
                     }
                     return this.restrictions(animal.position)
@@ -141,7 +145,7 @@ class mainStore{
                 return this.restrictions(animal.position)
             }
         }
-//============================ Контроль популяции
+//============================ Контроль популяции в тайлах
     @action 
         controlPopulation = (animals, addAnimal) => {
             const positions = [];
@@ -156,8 +160,7 @@ class mainStore{
             }
             const getCoitusPos = Array.from(new Set(recurPositions));
             getCoitusPos.map(pos=>{
-                const percent = this.factor();
-                percent<=10 && addAnimal(pos);
+                this.factor()<=20 && addAnimal(pos);
             });
         }
 };

@@ -6,13 +6,13 @@ export const Info = inject('tableStore')(observer(({ tableStore, name })  =>{
         <div className='counter'>
             {
                 name === 'rabbits'
-                ? `RABBITS: ${tableStore.getTable[name]}`
+                ? `RABBITS: ${tableStore.getPanel[name]}`
                 : name ==='foxes' 
-                ? `FOXES: ${tableStore.getTable[name]}`
+                ? `FOXES: ${tableStore.getPanel[name]}`
                 : name === 'score'
-                ? `SCORE: ${tableStore.getTable[name]}`
+                ? `SCORE: ${tableStore.getPanel[name]}`
                 : name === 'speed'
-                ? `SPEED: ${tableStore.getTable[name]}`
+                ? `SPEED: ${tableStore.getPanel[name]}`
                 : ''
             }
         </div>
