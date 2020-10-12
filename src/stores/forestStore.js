@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 
-import { shuffle, percents } from './modules';
+import { shuffle, percents } from '../modules/modules.ts';
 
 export default class forestStore{
     constructor(){
@@ -44,6 +44,7 @@ export default class forestStore{
     @action 
         addTiles = (obj, min, max) => {
             const length = this.percents(min, max);
+            console.log(obj)
             if(this.forest.length < 1){
                 this.forest.length = length;
                 this.forest.fill(obj);

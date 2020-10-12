@@ -1,6 +1,6 @@
 import { observable, action, computed, autorun, reaction } from 'mobx';
 
-import { restrictions, shuffle, randomIndex, factor } from './modules';
+import { restrictions, shuffle, randomIndex, factor } from '../modules/modules.ts';
 import forestStore from './forestStore';
 import rabbitStore from './rabbitStore';
 import tableStore from './tableStore';

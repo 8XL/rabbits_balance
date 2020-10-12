@@ -9,7 +9,7 @@ export const Playground = inject('forestStore', 'rabbitStore')(observer(({ fores
             <div className='playground__border'>
                 <div className='playground__field'>
                     {
-                        forestStore.forest.map((chunk, i)=>(
+                        forestStore.getForest.map((chunk, i)=>(
                             <Chunk 
                                 key={i} 
                                 chunk={chunk} 

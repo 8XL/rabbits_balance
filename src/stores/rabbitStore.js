@@ -1,6 +1,6 @@
 import { observable, action, computed, autorun } from 'mobx';
 
-import { shuffle, timestamp } from './modules';
+import { shuffle, timestamp } from '../modules/modules.ts';
 import mainStore from './mainStore';
 
 export default class rabbitStore {
