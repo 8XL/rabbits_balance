@@ -1,6 +1,6 @@
-import { NumToArrF, ShuffleF, ArrToNumF, VoidToNumF, PercentsF} from './TModules';
+/// <reference path="TModules.d.ts" />
 
-export const restrictions: NumToArrF = (num) => {
+const restrictions: NumToArrF = (num) => {
 	if (num === 399){
 			return [-20, -20, -1, -1]
 	} else if (num === 380){
@@ -22,7 +22,7 @@ export const restrictions: NumToArrF = (num) => {
 	}
 };
 
-export const shuffle: ShuffleF = (arr) => {
+const shuffle:ShuffleF = (arr) => {
 	if(arr.length>2){
 			for (let i: number  = arr.length - 1; i > 0; i--) {
 					let j: number  = Math.floor(Math.random() * (i + 1)); 
@@ -33,21 +33,21 @@ export const shuffle: ShuffleF = (arr) => {
 	return arr
 }
 
-export const randomIndex: ArrToNumF = (arr) => {
+const randomIndex: ArrToNumF = (arr) => {
 	return Math.floor(Math.random() * ((arr.length+1) - 1) + 1) - 1;
 }
 
-export const percents: PercentsF = (min, max) => {
+const percents: PercentsF = (min, max) => {
 	const startRange = Math.floor(((20 * 20) * min) / 100);
 	const endRange = Math.floor(((20 * 20) * max) / 100);
 	return Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
 }
 
-export const factor: VoidToNumF = () => {
+const factor: VoidToNumF = () => {
 	return Math.floor(Math.random()*(101-1)+1);
 }
 
-export const timestamp: VoidToNumF = ()=>{
+const timestamp: VoidToNumF = ()=>{
 	return Math.floor(new Date().getTime()*(Math.random()*(1000-1)+1))
 }
 
@@ -73,3 +73,5 @@ const delayForFox = {}
 //     console.log('restrictions', animal.position)
 //     return restrictions(animal.position)
 // }
+
+export {restrictions, shuffle, randomIndex, percents, factor, timestamp}

@@ -1,31 +1,9 @@
+/// <reference path="forestStore.d.ts" />
+//я чуть не заплакал, пока разбирался...в ведь у меня борода даже есть
 import { observable, action, computed } from 'mobx';
 
-import { shuffle, percents } from '../modules/modules';
-import { ShuffleF, PercentsF } from '../modules/TModules';
-import { dataForest, TDataForest, TTile} from '../staticData';
-
-export type TGetForest = TTile[];
-export type THoles = number[];
-export type TGetHoles = THoles;
-export type TFillForest = any;
-export interface TSetDataTiles {
-	(arr: TTile[]) : void;
-}
-export type TAddTiles = (tile: TTile, min: number, max: number) => void;
-
-export interface IForestStoreCtor {
-	(): IForestStore
-}
-
-export interface IForestStore {
-	forest: TTile[];
-	getForest: TGetForest;
-	holes: THoles;
-	getHoles: TGetHoles;
-	fillForest: any;
-	setDataTiles: TSetDataTiles;
-	addTiles: TAddTiles;
-}
+import { shuffle, percents } from '../../modules/modules';
+import { dataForest } from '../../staticData/data';
 
 export default class forestStore implements IForestStore{
 	shuffle: ShuffleF;
@@ -47,7 +25,7 @@ export default class forestStore implements IForestStore{
 			}
 
 	@observable
-			holes = [];
+			holes: THoles = [];
 
 	@computed get
 			getHoles(){
@@ -69,18 +47,18 @@ export default class forestStore implements IForestStore{
 							tile.name==='hole'&&this.holes.push(i);
 					})
 			}
-//реши ошибку с never
+
 	@action 
 			addTiles: TAddTiles = (tile, min, max) => {
-					const length = this.percents(min, max);
-					if(this.forest.length < 1){
+					const length = this.percents(min!, max!);
+					if(tile.name === 'grass'){
+						const end = this.forest.length;
+						this.forest.length = 400;
+						this.forest.fill(tile, end);
+					}else if(this.forest.length < 1){
 							this.forest.length = length;
 							this.forest.fill(tile);
-					} else if(tile.name === 'grass'){
-							const end = this.forest.length;
-							this.forest.length = 400;
-							this.forest.fill(tile, end);
-					} else {
+					}  else {
 							this.forest.length += length;
 							this.forest.fill(tile, this.forest.length - length);
 					} 

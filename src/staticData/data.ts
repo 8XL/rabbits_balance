@@ -1,18 +1,4 @@
-export type Td = {
-	name: string,
-	rabbit: boolean,
-	wolf: boolean,
-}
-
-export type TTile = Record<string, boolean | string>
-
-export type TForestObj = {
-	tile: TTile,
-	min?: number,
-	max?: number,
-}
-
-export type TDataForest = TForestObj[];
+/// <reference path="data.d.ts" />
 export const dataForest: TDataForest  = [
 	{
 			tile: {
@@ -64,6 +50,6 @@ export const dataForest: TDataForest  = [
 					name: 'grass',
 					rabbit: false,
 					wolf: false
-			},
+			}
 	},
 ]
