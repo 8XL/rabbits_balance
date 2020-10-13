@@ -2,7 +2,7 @@ import { observable, action, computed, autorun, reaction } from 'mobx';
 
 import { restrictions, shuffle, randomIndex, factor } from '../modules/modules.ts';
 import forestStore from './forestStore/forestStore';
-import rabbitStore from './rabbitStore';
+import rabbitStore from './rabbitStore/rabbitStore';
 import tableStore from './tableStore';
 
 class mainStore{
@@ -16,7 +16,7 @@ class mainStore{
         this.shuffle = shuffle;
         this.randomIndex = randomIndex;
         this.factor = factor;
-        
+        // промис сюда вот и там ретёрны
         autorun(()=>{
             this.forestStore.fillForest();
             this.rabbitStore.fillPopulation();
@@ -27,13 +27,6 @@ class mainStore{
             ()=> this.getMovementCounter,
             score=>{
                this.tableStore.setPanel({score: score})
-            }
-        )
-
-        reaction(
-            ()=> this.rabbitStore.getRabbitsCount,
-            rabbits=>{
-                this.tableStore.setPanel({rabbits: rabbits})
             }
         )
 

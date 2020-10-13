@@ -17,7 +17,7 @@ export default class forestStore implements IForestStore{
 	}
 
 	@observable
-			forest: TTile[] = [];
+			forest: TDataTile[] = [];
 
 	@computed get
 			getForest() {
@@ -35,7 +35,7 @@ export default class forestStore implements IForestStore{
 	@action    
 			fillForest = () =>{
 					for(let el of this.data){
-							this.addTiles(el.tile, el.min, el.max);
+							this.addTiles(el);
 					}
 					this.shuffle(this.forest);
 					this.setDataTiles(this.forest);
@@ -49,18 +49,18 @@ export default class forestStore implements IForestStore{
 			}
 
 	@action 
-			addTiles: TAddTiles = (tile, min, max) => {
-					const length = this.percents(min!, max!);
-					if(tile.name === 'grass'){
+			addTiles: TAddTiles = (el) => {
+					const length = this.percents(el.min!, el.max!);
+					if(el.tile.name === 'grass'){
 						const end = this.forest.length;
 						this.forest.length = 400;
-						this.forest.fill(tile, end);
+						this.forest.fill(el.tile, end);
 					}else if(this.forest.length < 1){
 							this.forest.length = length;
-							this.forest.fill(tile);
+							this.forest.fill(el.tile);
 					}  else {
 							this.forest.length += length;
-							this.forest.fill(tile, this.forest.length - length);
+							this.forest.fill(el.tile, this.forest.length - length);
 					} 
 			}  
 }

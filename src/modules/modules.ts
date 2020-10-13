@@ -21,6 +21,37 @@ const restrictions: NumToArrF = (num) => {
 			return [1, 20, -1, -20]
 	}
 };
+// возможно свитч или объект
+// const a = (num) => {
+// 	switch (num) {
+// 		case 399 :
+// 			return [-20, -20, -1, -1];
+		
+// 		case 380 :
+// 			return 	[-20, 1, 1, -20,];
+		
+// 		case 0 :
+// 			return [20, 1, 20, 1];
+		
+// 		case 19 :
+// 			return [-1, -1, 20, 20];
+		
+// 		case num < 20 :
+// 			return [1, -1, 20];
+		
+// 		case num > 379 :
+// 			return [-1, -20, 1];
+		
+// 		case (num + 1) % 20 === 0 :
+// 			return [20, -1, -20];
+		
+// 		case num % 20 === 0 :
+// 			return [1, 20, -20];
+		
+// 		default :
+// 			return [1, 20, -1, -20]
+// 	}
+// }
 
 const shuffle:ShuffleF = (arr) => {
 	if(arr.length>2){
@@ -38,8 +69,8 @@ const randomIndex: ArrToNumF = (arr) => {
 }
 
 const percents: PercentsF = (min, max) => {
-	const startRange = Math.floor(((20 * 20) * min) / 100);
-	const endRange = Math.floor(((20 * 20) * max) / 100);
+	const startRange: number = Math.floor(((20 * 20) * min) / 100);
+	const endRange: number = Math.floor(((20 * 20) * max) / 100);
 	return Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
 }
 
@@ -58,7 +89,9 @@ const delayForRabbits = {
 	forest: 2,
 }
 
-const delayForFox = {}
+const delayForFoxes = {
+
+}
 
 // if(animal.position === value){
 //     console.log('delayed')
