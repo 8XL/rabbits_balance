@@ -1,5 +1,19 @@
+
+
 .App {
+  display: flex;
   text-align: center;
+}
+
+.playground__border{
+  width: 600px;
+  height: 600px;
+
+  margin: 20px;
+  padding: 20px;
+
+  background-color:  saddlebrown;
+  border: solid 5px black;
 }
 
 .playground__field{
@@ -7,13 +21,61 @@
   grid-template-columns: repeat(20, 30px);
   grid-template-rows: repeat(20, 30px);
 
-  width: 600px;
-  height: 600px;
-
   background-color: #45a345;
+
+  outline: solid 5px black;
 }
 
 .playground__chunk{
   width: 30px;
   height: 30px;
+  overflow-wrap: normal;
+}
+
+.rabbit{
+  width: 10px;
+  height: 10px;
+  background-color: blanchedalmond;
+  float: left;
+}
+
+.rabbit:focus{
+  background-color: red;
+}
+
+.panel{
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  border: 5px solid black;
+  
+  color: white;
+  margin: 20px 0;
+}
+
+.panel__info{
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  width: 100%;
+  height: 15%;
+  background-color: saddlebrown;
+  outline: 5px dashed black;
+}
+
+.counter{
+  height: 40px;
+  padding: 5px;
+
+  text-align: center;
+}
+
+.btn{
+  width: 75px;
+  height: 30px;
+  background-color: rgb(253, 203, 77);
+  box-shadow: 4px 5px black;
+
+  border: none;
+  outline: none;
 }
