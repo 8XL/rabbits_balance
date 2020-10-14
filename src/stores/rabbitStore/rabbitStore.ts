@@ -3,10 +3,10 @@
 import { observable, action, reaction, computed, autorun } from 'mobx';
 
 import { shuffle, timestamp } from '../../modules/modules';
-import mainStore from '../mainStore';
+import mainStore from '../mainStore/mainStore';
 
 export default class rabbitStore implements IRabbitStore{
-	shuffle: ShuffleF
+	shuffle: TShuffle
 	timestamp: VoidToNumF
 
   constructor(){
@@ -35,10 +35,10 @@ export default class rabbitStore implements IRabbitStore{
 		}
 	
 	@observable
-    rabbitsCount: TRabbitsCount = 10;
+    rabbitsCount: number = 10;
 
 	@computed get 
-    getRabbitsCount():TRabbitsCount {
+    getRabbitsCount(): number {
       return this.rabbits.length
     }
 

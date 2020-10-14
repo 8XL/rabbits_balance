@@ -9,7 +9,6 @@ declare type TRabbit = {
 };
 declare type TRabbits = TRabbit[];
 declare type TDelayForRabbits = Record<string, number>;
-declare type TRabbitsCount  = number;
 declare type TFillPopulation = (animals:number)=> void;
 declare type TAddPopulation = (pos?: number) => void;
 declare type TSetRabbits = (animals: TRabbit[]) => void;
@@ -18,7 +17,7 @@ declare type TSetTile = (i: any, tile: any) => void;
 declare interface IRabbitStore {
 	rabbits: TRabbits;
 	getRabbits: TRabbits;
-	rabbitsCount: TRabbitsCount;
+	rabbitsCount: number;
 	getRabbitsCount: TRabbitsCount;
 	delayForRabbits: TDelayForRabbits;
 	fillPopulation: TFillPopulation;
@@ -26,5 +25,3 @@ declare interface IRabbitStore {
 	setRabbits:TSetRabbits;
 	setTile:TSetTile;
 };
-
-declare type TRabbitsStoreCtor = () => IRabbitStore;

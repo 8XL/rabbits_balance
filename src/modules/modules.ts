@@ -53,7 +53,7 @@ const restrictions: NumToArrF = (num) => {
 // 	}
 // }
 
-const shuffle:ShuffleF = (arr) => {
+const shuffle:TShuffle = (arr) => {
 	if(arr.length>2){
 			for (let i: number  = arr.length - 1; i > 0; i--) {
 					let j: number  = Math.floor(Math.random() * (i + 1)); 
@@ -68,7 +68,7 @@ const randomIndex: ArrToNumF = (arr) => {
 	return Math.floor(Math.random() * ((arr.length+1) - 1) + 1) - 1;
 }
 
-const percents: PercentsF = (min, max) => {
+const percents: TPercents = (min, max) => {
 	const startRange: number = Math.floor(((20 * 20) * min) / 100);
 	const endRange: number = Math.floor(((20 * 20) * max) / 100);
 	return Math.floor(Math.random() * (startRange - endRange + 1)) + endRange;
