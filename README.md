@@ -1,68 +1,46 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Общее
 
-## Available Scripts
+Приложение носит развлекательный характер и пишется исключительно для тренировки личных навыков программирования.
+Суть приложения проста - контролировать популяцию кроликов на поле 20х20 клеток.
 
-In the project directory, you can run:
+На даанном этапе разработки реализовано:
+- Игровое поле (`<Playground />`)
+- Панель управления (`<Panel />`) - не до конца.
+- Кролики (`<Rabbit />`)
 
-### `npm start`
+Вся логика приложения хранится в stores( MobX ), так что компоненты реакта, по сути...тупые. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### mainStore
+Здесь все самое интересное. Данный стор является корневым и прослушивает остальные, отвечает за реализацию перемещения животных по карте(включая задержку), контролирует их популяцию(20% и в зависимости от тайла. животные(сейчас кролики) не могут размножаться на некоторых типах тайлов), контролирует память животных.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### forestStore 
+ForestStore отвечает за состояние игрового поля. Инициализируется при запуске приложения, генерируя игровую площадку.
+Поле имеет в себе несколько разновидностей тайлов(детали в staticData/data.ts), такие как:
+- Вода(water)
+- Болото(swamp)
+- Грязь(mud)
+- Лес(forest)
+- Нора(hole)
+- Трава(grass)
 
-### `npm test`
+Генерация игрового поля происходит псевдо-случайным образом. Каждый их тайлов имеет процентный диапозон. Выбор процента происходит псевдо-случайно, как и их расположение на игровом поле. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В зависимости от тайла животное(пока только кролики), получают задержку в движении. Например если кролик оказался в воде - он ожидает 3 игровых хода, в лесу - 2.
+Если же кролик(тут уже строго) попадает в нору, то псевдо-случайным образом он может оказаться на любом другом тайле норы.
 
-### `npm run build`
+### rabbitStore
+RabbitStore отвечает за состояние кроликов. (в дальнейшем планируется адаптировать под второй тип животных, сделав стор более универсальным). Данный стор инициализирует кроликов при старте игры(их расположение на карте так же псевдо-случайно, но не половины карты(на перспективу с другим типом животных)).
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+У кроликов есть простенькая память и скудный интеллект, которая хранит в себе до 10 тайлов с задержками. Животное, оказавшись на замедляющем тайле, с вероятностью в 15% может его запомнить. С этого момента каждый следующий шаг животное будет обращаться к своей памяти, проверяя, было ли оно на предстоящем тайле и, если такой окажется в его памяти, то, с вероятностью в 20% он развернется в любую другую сторону.(animalMemory)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### tableStore
+Данный стор отвечает за состояние игровой панели. Тут нет ничего интересного на данный момент и реализация формальна. Сейчас он просто отвечает за отражение игрового процесса: количество прошедших ходов, количество кроликов и игровая скорость(её можно менять, увеличивая или уменьшая временной интервал).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Почему ambient declaration в объявлении типов?
+1. Чтобы не создавать ад импортов.
+2. Я искал ответы, но нигде не увидел, что это плохая практика.
+3. ...но и подтверждения хороших практик я тоже не нашел.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Бардак на Git
+На данном этапе я использую гит не столько ради версионирования, сколько как дневник проведенных работ, дабы показать(если кто-то его вообще открывает), что я что-то делаю и практикуюсь.

@@ -2,23 +2,23 @@
 
 const restrictions: NumToArrF = (num) => {
 	if (num === 399){
-			return [-20, -20, -1, -1]
+		return [-20, -20, -1, -1]
 	} else if (num === 380){
-			return [-20, 1, 1, -20,]
+		return [-20, 1, 1, -20,]
 	}  else if (num === 0){
-			return [20, 1, 20, 1]
+		return [20, 1, 20, 1]
 	} else if (num === 19){
-			return [-1, -1, 20, 20]
+		return [-1, -1, 20, 20]
 	} else if (num < 20){
-			return [1, -1, 20]
+		return [1, -1, 20]
 	} else if (num > 379){
-			return [-1, -20, 1]
+		return [-1, -20, 1]
 	} else if((num + 1) % 20 === 0){
-			return [20, -1, -20]
+		return [20, -1, -20]
 	} else if (num % 20 === 0){
-			return [1, 20, -20]
+		return [1, 20, -20]
 	} else {
-			return [1, 20, -1, -20]
+		return [1, 20, -1, -20]
 	}
 };
 // возможно свитч или объект
@@ -55,11 +55,11 @@ const restrictions: NumToArrF = (num) => {
 
 const shuffle:TShuffle = (arr) => {
 	if(arr.length>2){
-			for (let i: number  = arr.length - 1; i > 0; i--) {
-					let j: number  = Math.floor(Math.random() * (i + 1)); 
-					[arr[i], arr[j]] = [arr[j], arr[i]];
-			}
-			return arr
+		for (let i: number  = arr.length - 1; i > 0; i--) {
+			let j: number  = Math.floor(Math.random() * (i + 1)); 
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+		}
+		return arr
 	}
 	return arr
 }
@@ -107,4 +107,4 @@ const delayForFoxes = {
 //     return restrictions(animal.position)
 // }
 
-export {restrictions, shuffle, randomIndex, percents, factor, timestamp}
+export {restrictions, shuffle, randomIndex, percents, factor, timestamp};
