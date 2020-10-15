@@ -1,4 +1,4 @@
-declare type TDataTile = Record<string, boolean | string>
+declare type TDataTile = string;
 declare type TDataForestObj = {
 	tile: TDataTile,
 	min?: number,

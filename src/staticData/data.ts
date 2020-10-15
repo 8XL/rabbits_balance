@@ -1,55 +1,31 @@
 /// <reference path="data.d.ts" />
 export const dataForest: TDataForest  = [
 	{
-			tile: {
-					name: 'hole',
-					rabbit: false,
-					wolf: false
-			},
+			tile: 'hole',
 			min: 1,
 			max: 3
 	},
 	{
-			tile: {
-					name: 'water',
-					rabbit: false,
-					wolf: false
-			},
+			tile: 'water',
 			min: 7,
 			max: 10
 	},
 	{
-			tile: {
-					name: 'swamp',
-					rabbit: false,
-					wolf: false
-			},
+			tile: 'swamp',
 			min: 3,
 			max: 4
 	},
 	{
-			tile: {
-					name: 'mud',
-					rabbit: false,
-					wolf: false
-			},
+			tile: 'mud',
 			min: 3,
 			max: 4
 	},
 	{
-			tile: {
-					name: 'forest',
-					rabbit: false,
-					wolf: false
-			},
+			tile: 'forest',
 			min: 10,
 			max: 15
 	},
 	{
-			tile: {
-					name: 'grass',
-					rabbit: false,
-					wolf: false
-			}
+			tile: 'grass',
 	},
 ]

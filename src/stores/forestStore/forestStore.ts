@@ -48,14 +48,14 @@ export default class forestStore implements IForestStore{
 	@action 
 		setDataTiles: TSetDataTiles = (arr) => {
 			arr.forEach((tile, i)=>{
-				tile.name==='hole'&&this.holes.push(i);
+				tile==='hole'&&this.holes.push(i);
 			})
 		}
 
 	@action 
 		addTiles: TAddTiles = (el) => {
 			const length = this.percents(el.min!, el.max!);
-			if(el.tile.name === 'grass'){
+			if(el.tile === 'grass'){
 				const end = this.forest.length;
 				this.forest.length = 400;
 				this.forest.fill(el.tile, end);
