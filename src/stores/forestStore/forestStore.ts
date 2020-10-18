@@ -11,13 +11,13 @@ export default class forestStore implements IForestStore{
 	data: TDataForest;
 
 	constructor(){
-			this.data = dataForest;
-			this.shuffle = shuffle;
-			this.percents = percents;
+		this.data = dataForest;
+		this.shuffle = shuffle;
+		this.percents = percents;
 
-			autorun(()=>{
-				this.fillForest();
-			});
+		autorun(()=>{
+			this.fillForest();
+		});
 	}
 
 	@observable
@@ -41,15 +41,6 @@ export default class forestStore implements IForestStore{
 			for(let el of this.data){
 				this.addTiles(el);
 			}
-			this.shuffle(this.forest);
-			this.setDataTiles(this.forest);
-		}
-
-	@action 
-		setDataTiles: TSetDataTiles = (arr) => {
-			arr.forEach((tile, i)=>{
-				tile==='hole'&&this.holes.push(i);
-			})
 		}
 
 	@action 
@@ -59,6 +50,8 @@ export default class forestStore implements IForestStore{
 				const end = this.forest.length;
 				this.forest.length = 400;
 				this.forest.fill(el.tile, end);
+				this.shuffle(this.forest);
+				this.setDataTiles(this.forest);
 			}else if(this.forest.length < 1){
 				this.forest.length = length;
 				this.forest.fill(el.tile);
@@ -66,5 +59,14 @@ export default class forestStore implements IForestStore{
 				this.forest.length += length;
 				this.forest.fill(el.tile, this.forest.length - length);
 			} 
+		}
+	
+	@action 
+		setDataTiles: TSetDataTiles = (arr) => {
+			let holes: number[] = []
+			arr.forEach((tile, i)=>{
+				tile==='hole'&&holes.push(i);
+			})
+			this.holes = holes;
 		}
 }

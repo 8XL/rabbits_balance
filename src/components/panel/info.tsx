@@ -11,9 +11,9 @@ export const Info: React.FC<IInfo> = observer(({ name }):JSX.Element  =>{
   return(
     <div className='counter'>
     	{
-    	  name === 'rabbits'
+    	  name === 'rabbit'
     	  ? `RABBITS: ${tableStore.getPanel[name]}`
-    	  : name ==='foxes' 
+    	  : name ==='fox' 
     	  ? `FOXES: ${tableStore.getPanel[name]}`
     	  : name === 'score'
     	  ? `SCORE: ${tableStore.getPanel[name]}`

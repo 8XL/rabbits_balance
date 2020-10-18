@@ -1,5 +1,5 @@
 /// <reference path="data.d.ts" />
-export const dataForest: TDataForest  = [
+const dataForest: TDataForest  = [
 	{
 			tile: 'hole',
 			min: 1,
@@ -29,3 +29,23 @@ export const dataForest: TDataForest  = [
 			tile: 'grass',
 	},
 ]
+
+const animalsQuantity: TAnimalsQuantity = {
+	rabbit: 10,
+	fox: 4
+}
+
+const animalsDelayes: TAnimalsDelayes = {
+	rabbit: {
+		water: 3,
+		swamp: 3,
+		mud: 2,
+		forest: 2,
+	},
+	fox: {
+		water: 2,
+		swamp: 3,
+	}
+}
+
+export {dataForest, animalsQuantity, animalsDelayes}

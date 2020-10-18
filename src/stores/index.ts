@@ -3,7 +3,7 @@ import mainStore from './mainStore/mainStore'
 declare type TStores = {
 	mainStore: IMainStore,
 	forestStore: IForestStore,
-	rabbitStore: IRabbitStore,
+	rabbitStore: IAnimalStore,
 	tableStore: ITableStore
 }
 

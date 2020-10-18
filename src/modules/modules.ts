@@ -82,17 +82,6 @@ const timestamp: VoidToNumF = ()=>{
 	return Math.floor(new Date().getTime()*(Math.random()*(1000-1)+1))
 }
 
-const delayForRabbits = {
-	water: 3,
-	swamp: 4,
-	mud: 2,
-	forest: 2,
-}
-
-const delayForFoxes = {
-
-}
-
 // if(animal.position === value){
 //     console.log('delayed')
 //     if(0 <= animal.delayCounter){

@@ -15,7 +15,7 @@ export const Playground:React.FC = observer((): JSX.Element => {
                 key={i} 
                 chunk={chunk}
               >
-                { rabbitStore.getRabbits.map((rabbit, index)=>{
+                { rabbitStore.getAnimals.map((rabbit, index)=>{
                   if(rabbit.position === i){
                     rabbitStore.setTile(index, chunk)
                     return  <Rabbit key={rabbit.id}/>

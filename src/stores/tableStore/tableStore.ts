@@ -7,8 +7,8 @@ export default class tableStore implements ITableStore {
   @observable
     panel:TPanel = {
       score: mainStore.getMovementCounter,
-      rabbits: mainStore.rabbitStore.getRabbitsCount,
-      foxes: 0,
+      rabbit: mainStore.rabbitStore.getAnimals.length,
+      fox: 0,
       speed: mainStore.getIntervalSpeed,
     }
     
@@ -19,6 +19,7 @@ export default class tableStore implements ITableStore {
     
   @action
     setPanel:TSetPanel = (name) => {
+      console.log(name)
       const key:string[] = Object.keys(name);
       const [a, ...b] = key;
       this.panel[a] = name[a];

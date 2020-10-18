@@ -4,5 +4,7 @@ declare type TDataForestObj = {
 	min?: number,
 	max?: number,
 }
+declare type TAnimalsQuantity = Record<string, number>;
+declare type TAnimalsDelayes = Record<string, Record<string, number>>;
 
 declare type TDataForest = readonly TDataForestObj[];

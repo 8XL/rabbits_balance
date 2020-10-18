@@ -7,9 +7,9 @@ export const Panel:React.FC = ():JSX.Element =>{
     <div className='panel'>
       <div className='panel__info'>
         <Info name={'score'} />
-        <Info name={'rabbits'} />
+        <Info name={'rabbit'} />
         <Info name={'speed'} />
-        <Info name={'foxes'} />
+        <Info name={'fox'} />
       </div>
       <div className='panel__speed'>
         <Button btn={'+'} />
