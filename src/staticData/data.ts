@@ -30,22 +30,29 @@ const dataForest: TDataForest  = [
 	},
 ]
 
-const animalsQuantity: TAnimalsQuantity = {
-	rabbit: 10,
-	fox: 4
-}
-
-const animalsDelayes: TAnimalsDelayes = {
-	rabbit: {
-		water: 3,
-		swamp: 3,
-		mud: 2,
-		forest: 2,
+const animalsDetails: TAnimalsDetails = {
+	rabbit:{
+		delayes:{
+			water: 3,
+			swamp: 3,
+			mud: 2,
+			forest: 2,
+		},
+		quantity: 10,
+		intellect: 15,
+		memory: 10,
+		reproduction: 20,
 	},
-	fox: {
-		water: 2,
-		swamp: 3,
+	fox:{
+		delayes:{
+			water: 2,
+			swamp: 3,
+		},
+		quantity: 4,
+		intellect: 30,
+		memory: 15,
+		reproduction: 7,
 	}
 }
 
-export {dataForest, animalsQuantity, animalsDelayes}
+export {dataForest, animalsDetails}

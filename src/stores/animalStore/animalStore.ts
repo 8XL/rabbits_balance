@@ -3,7 +3,7 @@
 import { observable, action, reaction, computed, autorun } from 'mobx';
 
 import { restrictions, shuffle, randomIndex, factor, timestamp } from '../../modules/modules';
-import { animalsQuantity, animalsDelayes } from '../../staticData/data'
+import { animalsDetails } from '../../staticData/data'
 import mainStore from '../mainStore/mainStore';
 
 export default class animalStore implements IAnimalStore{
@@ -12,7 +12,7 @@ export default class animalStore implements IAnimalStore{
   restrictions: NumToArrF;
 	randomIndex: ArrToNumF;
   factor: VoidToNumF;
-
+  details: Record<string, TDelays | number>;
   name: string;
 
   constructor(animalName: string) {
@@ -23,10 +23,13 @@ export default class animalStore implements IAnimalStore{
     this.timestamp = timestamp;
     
     this.name = animalName;
+    this.details = animalsDetails[this.name];
     
 		autorun(()=>{
-      this.animalsDelay = animalsDelayes[this.name];
-      this.fillPopulation(animalsQuantity[this.name]);
+    // наследование интерфейсов
+      this.animalsDelay = this.details.delayes;
+      // this.fillPopulation(this.details.quantity);
+      console.log(this.details.delayes)
     });
 
     reaction(()=>this.getMovementCounter,

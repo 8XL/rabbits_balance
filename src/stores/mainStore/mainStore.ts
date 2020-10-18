@@ -7,16 +7,16 @@ import tableStore from '../tableStore/tableStore';
 
 class mainStore implements IMainStore{
 	forestStore: IForestStore;
-	rabbitStore: IAnimalStore;
+    rabbitStore: IAnimalStore;
+    foxStore: IAnimalStore;
 	tableStore: ITableStore;
 
   constructor(){
     this.forestStore = new forestStore();
     this.rabbitStore = new animalStore('rabbit');
+    this.foxStore = new animalStore('fox');
 	this.tableStore = new tableStore();
-		
 
-    // промис сюда вот и там ретёрны
     autorun(()=>{
       this.forestStore.fillForest();
       this.interval()
@@ -27,6 +27,7 @@ class mainStore implements IMainStore{
       score=>{
         this.tableStore.setPanel({score: score})
         this.rabbitStore.setMovementCounter(score)
+        this.foxStore.setMovementCounter(score)
     })
 		
     reaction(

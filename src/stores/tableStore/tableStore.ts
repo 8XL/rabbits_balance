@@ -8,7 +8,7 @@ export default class tableStore implements ITableStore {
     panel:TPanel = {
       score: mainStore.getMovementCounter,
       rabbit: mainStore.rabbitStore.getAnimals.length,
-      fox: 0,
+      fox: mainStore.foxStore.getAnimals.length,
       speed: mainStore.getIntervalSpeed,
     }
     
@@ -19,7 +19,6 @@ export default class tableStore implements ITableStore {
     
   @action
     setPanel:TSetPanel = (name) => {
-      console.log(name)
       const key:string[] = Object.keys(name);
       const [a, ...b] = key;
       this.panel[a] = name[a];

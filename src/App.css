@@ -39,8 +39,11 @@
   float: left;
 }
 
-.rabbit:focus{
-  background-color: red;
+.fox{
+  width: 12px;
+  height: 12px;
+  background-color: rgb(247, 154, 15);
+  float: left;
 }
 
 .panel{
