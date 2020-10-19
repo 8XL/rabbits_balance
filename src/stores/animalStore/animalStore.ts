@@ -82,7 +82,8 @@ export default class animalStore implements IAnimalStore{
         id: this.timestamp(),
         memory: []
       };
-			this.animals = [...this.animals, animal];
+      this.animals = [...this.animals, animal];
+      console.log('КОИТУС', animal.name)
     }
 
 //============================ Контроль популяции в тайлах
@@ -99,7 +100,7 @@ export default class animalStore implements IAnimalStore{
 
   @action
     animalMovement: TAnimalMovement = () => {
-      const newPoses: TAnimals =  this.animals.map(animal=>{
+      const newPoses: TAnimals =  this.animals.map((animal, i)=>{
         const delay = this.setDelay(animal)
         const steps = this.shuffle(delay);
         if(animal.hole){
@@ -109,7 +110,15 @@ export default class animalStore implements IAnimalStore{
         const movement = steps.length > 1 ? this.animalMemory(animal, steps) : 0;
         animal.position = animal.position += movement;
         return animal
-      });
+      }).filter(animal=>{
+//============================ в фильтрацию вписывай побочки
+        if(animal.tile === 'swamp' && this.factor()<=5){
+          console.log('УТАПИЛСь', animal.name)
+          return false
+        }else {
+          return animal
+        }
+      });;
 
       this.setAnimals(newPoses);
       this.restrictPopulation(newPoses);

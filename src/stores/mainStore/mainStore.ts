@@ -87,7 +87,6 @@ class mainStore implements IMainStore{
                 .map(fox=>{return fox.position})
                 .forEach(pos=>rabbits.some((rabbit, i)=>{
                     if(pos===rabbit.position && rabbit.tile !== 'swamp'&& rabbit.tile !== 'water'){
-                        console.log('aaaaaa', pos, rabbit.position)
                         if(this.factor()<=animalsDetails.fox.huntingFactor![rabbit.tile]){
                             rabbits.splice(i, 1);
                             console.log('САЖРАЛ')
