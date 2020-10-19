@@ -12,7 +12,7 @@ export default class animalStore implements IAnimalStore{
   restrictions: NumToArrF;
 	randomIndex: ArrToNumF;
   factor: VoidToNumF;
-  details: Record<string, TDelays | number>;
+  details: TAnimalDetails;
   name: string;
 
   constructor(animalName: string) {
@@ -26,10 +26,8 @@ export default class animalStore implements IAnimalStore{
     this.details = animalsDetails[this.name];
     
 		autorun(()=>{
-    // наследование интерфейсов
       this.animalsDelay = this.details.delayes;
-      // this.fillPopulation(this.details.quantity);
-      console.log(this.details.delayes)
+      this.fillPopulation(this.details.quantity);
     });
 
     reaction(()=>this.getMovementCounter,
@@ -73,7 +71,7 @@ export default class animalStore implements IAnimalStore{
     
   @action
     addPopulation: TAddPopulation = (pos?) => {   
-      const randomStartPosition: number = Math.floor(Math.random() * (390 - 145 + 1) + 145);
+      const randomStartPosition: number = Math.floor(Math.random() * (this.details.side.max - this.details.side.min + 1) + this.details.side.min);
       const position: number = pos ? pos : randomStartPosition;
       const animal:TAnimal = {
         name: this.name,
@@ -133,7 +131,7 @@ export default class animalStore implements IAnimalStore{
       }
       const getCoitusPos = Array.from(new Set(recurPositions));
       getCoitusPos.forEach(pos=>
-        this.factor()<=20 && this.addPopulation(pos)
+        this.factor()<=this.details.reproduction && this.addPopulation(pos)
       );
     } 
 
@@ -145,11 +143,12 @@ export default class animalStore implements IAnimalStore{
           return [0]
         } else if(animal.delayCounter >= this.animalsDelay[animal.tile]){
           animal.delayCounter = 0;
-          //с вероятностью в 15 процентов животное может запомнить замедляющий тайл 
-          //при выходе из него и ограничеваем память кролика в 10 элементов
-          if(this.factor() <= 15){
-              animal.memory.length > 10 && animal.memory.splice(0, animal.memory.length - 20);
-              animal.memory.push(animal.position);
+          if(this.factor() <= this.details.intellect){
+            // блок памяти
+            // ПОФИКСИ ПАМЯТЬ ЛИСЫ, ГДЕ ЛЕС И НОРЫ НЕ ДОБАВЛЯТЬ
+            animal.memory.length > this.details.memory && animal.memory.splice(0, animal.memory.length - this.details.memory);
+            animal.memory.push(animal.position);
+            return this.restrictions(animal.position)
           }
           return this.restrictions(animal.position)
         }
@@ -172,7 +171,7 @@ export default class animalStore implements IAnimalStore{
       let movement = this.randomIndex(step);
       if(animal.memory.length>0){
         for(let i=0; i<animal.memory.length; i++){
-          if(this.factor()<=20 && animal.position + step[movement] === animal.memory[i]){
+          if(this.factor()<=this.details.memory && animal.position + step[movement] === animal.memory[i]){
             step.splice(movement, 1);
             movement = this.randomIndex(step);
             return step[movement]

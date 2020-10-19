@@ -38,18 +38,35 @@ const animalsDetails: TAnimalsDetails = {
 			mud: 2,
 			forest: 2,
 		},
+		side:{
+			min: 150,
+			max: 250,
+		},
 		quantity: 10,
-		intellect: 15,
+		intellect: 12,
 		memory: 10,
 		reproduction: 20,
 	},
 	fox:{
 		delayes:{
+			hole: 5,
+			forest: 3,
 			water: 2,
 			swamp: 3,
 		},
+		side:{
+			min: 1,
+			max: 399,
+		},
+		huntingFactor:{
+			hole: 50,
+			forest: 40,
+			mud: 25,
+			grass: 20,
+			water: 10,
+		},
 		quantity: 4,
-		intellect: 30,
+		intellect: 24,
 		memory: 15,
 		reproduction: 7,
 	}
