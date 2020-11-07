@@ -1,9 +1,10 @@
 /// <reference path="animalStore.d.ts" />
 
 import { observable, action, reaction, computed, autorun } from 'mobx';
+import { act } from 'react-dom/test-utils';
 
 import { restrictions, shuffle, randomIndex, factor, timestamp } from '../../modules/modules';
-import { animalsDetails } from '../../staticData/data'
+import { animalsDetails, animalsTemplate } from '../../staticData/data'
 import mainStore from '../mainStore/mainStore';
 
 export default class animalStore implements IAnimalStore{
@@ -14,6 +15,7 @@ export default class animalStore implements IAnimalStore{
   factor: VoidToNumF;
   details: TAnimalDetails;
   name: string;
+  animal: IFox | IRabbit;
 
   constructor(animalName: string) {
     this.restrictions = restrictions;
@@ -23,6 +25,7 @@ export default class animalStore implements IAnimalStore{
     this.timestamp = timestamp;
     
     this.name = animalName;
+    this.animal = animalsTemplate[animalName];
     this.details = animalsDetails[this.name];
     
 		autorun(()=>{
@@ -73,15 +76,10 @@ export default class animalStore implements IAnimalStore{
     addPopulation: TAddPopulation = (pos?) => {   
       const randomStartPosition: number = Math.floor(Math.random() * (this.details.side.max - this.details.side.min + 1) + this.details.side.min);
       const position: number = pos ? pos : randomStartPosition;
-      const animal:TAnimal = {
-        name: this.name,
-        position: position,
-        tile: '',
-        delayCounter: 0,
-        hole: false,
-        id: this.timestamp(),
-        memory: []
-      };
+      const animal:IFox | IRabbit = this.animal;
+      animal.id = this.timestamp();
+      animal.position = position;
+
       this.animals = [...this.animals, animal];
       console.log('КОИТУС', animal.name)
     }
@@ -103,7 +101,7 @@ export default class animalStore implements IAnimalStore{
       const newPoses: TAnimals =  this.animals.map((animal, i)=>{
         const delay = this.setDelay(animal)
         const steps = this.shuffle(delay);
-        if(animal.hole){
+        if((animal as IRabbit).hole){
           animal.position = steps[this.randomIndex(steps)]
           return animal
         }
@@ -112,7 +110,7 @@ export default class animalStore implements IAnimalStore{
         return animal
       }).filter(animal=>{
 //============================ в фильтрацию вписывай побочки
-        if(animal.tile === 'swamp' && this.factor()<=5){
+        if(animal.tile === 'swamp' && this.factor()<=3){
           console.log('УТАПИЛСь', animal.name)
           return false
         }else {
@@ -139,9 +137,13 @@ export default class animalStore implements IAnimalStore{
         }
       }
       const getCoitusPos = Array.from(new Set(recurPositions));
-      getCoitusPos.forEach(pos=>
-        this.factor()<=this.details.reproduction && this.addPopulation(pos)
-      );
+      // проверяем, 
+      // mainStore.forestStore.getHoles.forEach(el=>{if(getCoitusPos.includes(el))factor += 2.6})
+      getCoitusPos.forEach(pos=>{
+        let factor = 1
+        if(mainStore.forestStore.getHoles.includes(pos) && this.name === 'rabbit') { console.log('траханье в норе'); factor = 2.6};
+        this.factor()<=Math.round(this.details.reproduction * factor) && this.addPopulation(pos)
+      });
     } 
 
   @action 
@@ -153,17 +155,19 @@ export default class animalStore implements IAnimalStore{
         } else if(animal.delayCounter >= this.animalsDelay[animal.tile]){
           animal.delayCounter = 0;
           if(this.factor() <= this.details.intellect){
-            // блок памяти
-            // ПОФИКСИ ПАМЯТЬ ЛИСЫ, ГДЕ ЛЕС И НОРЫ НЕ ДОБАВЛЯТЬ
             animal.memory.length > this.details.memory && animal.memory.splice(0, animal.memory.length - this.details.memory);
-            animal.memory.push(animal.position);
+            if(this.name === 'fox' && (animal.tile !== 'forest' && animal.tile !=='hole')){
+              animal.memory.push(animal.position);
+            } else {
+              animal.memory.push(animal.position);
+            }
             return this.restrictions(animal.position)
           }
           return this.restrictions(animal.position)
         }
       } else if(animal.name==='rabbit' && animal.tile === 'hole'){
-        animal.hole = !animal.hole;
-        if(animal.hole){
+        (animal as IRabbit).hole = !(animal as IRabbit).hole;
+        if((animal as IRabbit).hole){
             const arr = [...mainStore.forestStore.getHoles];
             return arr;    
         } else {
@@ -181,6 +185,7 @@ export default class animalStore implements IAnimalStore{
       if(animal.memory.length>0){
         for(let i=0; i<animal.memory.length; i++){
           if(this.factor()<=this.details.memory && animal.position + step[movement] === animal.memory[i]){
+            console.log('ПРОЯВИЛ НАХОДЧИВОСТЬ и развернулс', animal.name)
             step.splice(movement, 1);
             movement = this.randomIndex(step);
             return step[movement]

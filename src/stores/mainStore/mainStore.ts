@@ -1,7 +1,7 @@
 /// <reference path='mainStore.d.ts'/>
 import { observable, action, computed, autorun, reaction } from 'mobx';
 
-import { factor } from '../../modules/modules';
+import { factor, restrictions } from '../../modules/modules';
 import { animalsDetails } from '../../staticData/data'
 import forestStore from '../forestStore/forestStore';
 import animalStore from '../animalStore/animalStore';
@@ -14,6 +14,7 @@ class mainStore implements IMainStore{
     tableStore: ITableStore;
     
     factor: VoidToNumF;
+    restrictions: NumToArrF;
 
   constructor(){
     this.forestStore = new forestStore();
@@ -22,6 +23,7 @@ class mainStore implements IMainStore{
     this.tableStore = new tableStore();
 
     this.factor = factor;
+    this.restrictions = restrictions;
 
     autorun(()=>{
       this.forestStore.fillForest();
@@ -85,7 +87,7 @@ class mainStore implements IMainStore{
             const rabbits = this.rabbitStore.getAnimals;
             foxes
                 .map(fox=>{return fox.position})
-                .forEach(pos=>rabbits.some((rabbit, i)=>{
+                .forEach(pos=>rabbits.map((rabbit, i)=>{
                     if(pos===rabbit.position && rabbit.tile !== 'swamp'&& rabbit.tile !== 'water'){
                         if(this.factor()<=animalsDetails.fox.huntingFactor![rabbit.tile]){
                             rabbits.splice(i, 1);
@@ -94,6 +96,19 @@ class mainStore implements IMainStore{
                         }
                     }
                 }))
+            // метка охотника и таргет
+            const posesOfRabbits = rabbits.map(el=>{
+                return el.position
+            })
+            for(let fox of this.foxStore.getAnimals){
+                this.restrictions(fox.position).map(pos=>{
+                    if(posesOfRabbits.includes(fox.position+pos)){
+                        (fox as IFox).hunting = posesOfRabbits[posesOfRabbits.indexOf(fox.position+pos)] as number
+                        console.log('ХАНТЕР', (fox as IFox).hunting)
+                    }
+                })
+                
+            }
         }
 };
 

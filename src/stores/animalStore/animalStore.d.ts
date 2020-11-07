@@ -1,18 +1,8 @@
-declare type TAnimal = {
-	name: string,
-  position: number,
-  tile: string,
-  delayCounter: number,
-  hole?: boolean,
-  id: number,
-  memory: number[]
-};
-
 declare type TSetMovementCounter = (counter: numbermber) => void;
-declare type TAnimals = TAnimal[];
+declare type TAnimals = (IFox | IRabbit)[];
 declare type TFillPopulation = (animals:number)=> void;
 declare type TAddPopulation = (pos?: number) => void;
-declare type TSetAnimals = (animals: TAnimal[]) => void;
+declare type TSetAnimals = (animals: (IFox | IRabbit)[]) => void;
 declare type TSetTile = (i: any, tile: any) => void;
 declare type TRestrictPopulation = (animals: TAnimals) => void;
 declare type TAnimalMovement = () => void;

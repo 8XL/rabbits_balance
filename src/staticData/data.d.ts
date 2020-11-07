@@ -19,3 +19,20 @@ declare type TAnimalDetails = {
 declare type TAnimalsDetails = {
 	[name: string]:TAnimalDetails,
 }
+
+type TAnimal = {
+	name: string,
+  position: number,
+  tile: string,
+  delayCounter: number,
+  id: number,
+	memory: number[]
+};
+
+declare interface IFox extends TAnimal{
+	hunting: null | number
+}
+
+declare interface IRabbit extends TAnimal{
+	hole: boolean
+}

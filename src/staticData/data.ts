@@ -1,4 +1,5 @@
 /// <reference path="data.d.ts" />
+import { restrictions, shuffle, randomIndex, factor, timestamp } from '../modules/modules';
 const dataForest: TDataForest  = [
 	{
 			tile: 'hole',
@@ -39,37 +40,58 @@ const animalsDetails: TAnimalsDetails = {
 			forest: 2,
 		},
 		side:{
-			min: 150,
-			max: 250,
+			min: 175,
+			max: 225,
 		},
 		quantity: 10,
 		intellect: 12,
 		memory: 10,
-		reproduction: 20,
+		reproduction: 15,
 	},
 	fox:{
 		delayes:{
 			hole: 5,
 			forest: 3,
 			water: 2,
-			swamp: 3,
+			swamp: 2,
 		},
 		side:{
-			min: 1,
-			max: 399,
+			min: 100,
+			max: 300,
 		},
 		huntingFactor:{
-			hole: 50,
-			forest: 40,
-			mud: 25,
-			grass: 20,
-			water: 10,
+			hole: 40,
+			forest: 30,
+			mud: 20,
+			grass: 10,
+			water: 5,
 		},
-		quantity: 4,
-		intellect: 24,
+		quantity: 8,
+		intellect: 30,
 		memory: 15,
 		reproduction: 7,
 	}
 }
 
-export {dataForest, animalsDetails}
+const animalsTemplate: {[name: string]: IFox | IRabbit} = {
+	rabbit: {
+		name: 'rabbit',
+    position: 0,
+    tile: '',
+    delayCounter: 0,
+    hole: false,
+    id: 0,
+    memory: []
+	},
+	fox:{
+		name: 'fox',
+		position: 0,
+		tile: '',
+		delayCounter: 0,
+		hunting: null,
+		id: 0,
+		memory: []
+	}
+}
+
+export {dataForest, animalsDetails, animalsTemplate}
